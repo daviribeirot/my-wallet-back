@@ -1,4 +1,4 @@
-import db from '../config/database';
+import db from '../config/database.js';
 
 export async function authValidation(req, res, next) {
   const { authorization } = req.headers;
@@ -7,15 +7,15 @@ export async function authValidation(req, res, next) {
   if (!token) return res.status(422).send("Informe o token correto!");
 
   try {
-    const sessionExists = await db.collection("sessoes").findOne({ token })
+    const sessionExists = await db.collection("sessoes").findOne({ token });
 
-    if (!sessionExists) return res.status(401).send("Você não tem autorização")
+    if (!sessionExists) return res.status(401).send("Você não tem autorização");
 
-    res.locals.token = sessionExists
+    res.locals.user = sessionExists;
 
-    next()
+    next();
 
   } catch (error) {
-    res.status(500).send(error)
+    res.status(500).send(error);
   }
 }
