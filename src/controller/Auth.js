@@ -38,9 +38,11 @@ export async function signIn(req, res) {
 
     const token = uuidV4();
 
-    await db.collection("sessoes").insertOne({ idUsuario: userExists._id, token })
+    await db.collection("sessoes").insertOne({ name: userExists.name, idUsuario: userExists._id, token })
+    const user = await db.collection("usuarios").findOne({email: userExists.email})
+    const userBody = {name: user.name, email: user.email, idUsuario: userExists._id , token};
 
-    return res.status(200).send(token)
+    return res.status(200).send(userBody)
 
   } catch (error) {
     res.status(500).send(error.message)

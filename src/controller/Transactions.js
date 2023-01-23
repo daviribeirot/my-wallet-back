@@ -24,7 +24,7 @@ export async function makeTransactions(req, res) {
         date: dayjs().format("DD/MM"),
         idUsuario: sessionExists.idUsuario });
     console.log(data);
-    res.send("Ok");
+    res.send(data);
 
   } catch (err) {
     console.log(err);
