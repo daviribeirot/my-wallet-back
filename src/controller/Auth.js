@@ -46,3 +46,19 @@ export async function signIn(req, res) {
     res.status(500).send(error.message)
   }
 }
+
+export async function logout(req, res) {
+  const { authorization } = req.headers;
+
+    const token = authorization?.replace("Bearer ", "");
+
+    if (!token) return res.sendStatus(401);
+
+ try {
+    await db.collection("sessoes").deleteOne({ token });
+        res.sendStatus(200);
+ } catch (error) {
+  res.status(500).send(error.message);
+ }
+}
+

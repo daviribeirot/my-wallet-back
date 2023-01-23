@@ -2,10 +2,11 @@ import db from '../config/database.js'
 import dayjs from 'dayjs'
 
 export async function listTransactions(req, res) {
-  try {
-    const data = await db.collection("transactions").find().toArray();
+  const sessionExists = res.locals.user;
 
-    return res.send(data);
+  try {
+    const data = await db.collection("transactions").find({idUsuario: sessionExists.idUsuario }).toArray();
+    return res.status(200).send(data);
   } catch (error) {
     res.status(500).send("Há algo de errado com o servidor");
   }
